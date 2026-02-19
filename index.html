@@ -4,12 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DiffCheck - Premium File Comparison</title>
+    <title>DiffCheck - Online File Comparison</title>
     <meta name="description"
         content="Compare two versions of a file and highlight differences with ease. Fast, secure, and user-friendly.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/style.css">
+    <!-- <link rel="stylesheet" href="assets/font-awesome.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap"
         rel="stylesheet">
@@ -35,7 +38,12 @@
                 </label>
             </div>
             <button id="compareBtn" class="btn">
-                ⚡ Compare Files
+                <i class="fa-solid fa-code-compare fa-2xl" style="color: rgb(237, 22, 4);"></i>
+                Compare Files
+            </button>
+            <button id="clearBtn" class="btn">
+                <i class="fa-solid fa-broom fa-2xl" style="color: rgb(237, 22, 4);"></i>
+                Clear Contents
             </button>
         </div>
 
@@ -70,14 +78,14 @@
                         <span style="color: var(--diff-removed-border)">⊖</span>
                         <span id="removalStats">0 removals</span>
                     </div>
-                    <button class="btn-copy" onclick="copyText('text1')">Copy</button>
+                    <button class="btn-copy" onclick="copyText('text1', this)">Copy</button>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">
                         <span style="color: var(--diff-added-border)">⊕</span>
                         <span id="additionStats">0 additions</span>
                     </div>
-                    <button class="btn-copy" onclick="copyText('text2')">Copy</button>
+                    <button class="btn-copy" onclick="copyText('text2', this)">Copy</button>
                 </div>
             </div>
             <div class="diff-side-by-side">
@@ -87,13 +95,14 @@
         </div>
     </main>
 
-
     <footer>
-        <p>&copy; 2026 DiffCheck. by <a href="https://sagarmalla.info.np" target="_blank" rel="noopener noreferrer"
-                style="color:orangered">Sagar Malla</a> </p>
+        <center>
+            <p>&copy; 2026 DiffCheck. by <a href="https://sagarmalla.info.np" target="_blank"
+                    rel="noopener noreferrer">Sagar Malla</a> </p>
+        </center>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="assets/script.js"></script>
 </body>
 
 </html>

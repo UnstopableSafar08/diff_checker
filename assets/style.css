@@ -121,6 +121,12 @@ main {
     box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
 }
 
+#compareBtn {
+    margin-left: auto;
+    font-weight: bold;
+    background-color: rgb(136, 200, 40);
+}
+
 /* Side-by-Side Editor */
 .comparison-grid {
     display: grid;
@@ -343,6 +349,17 @@ textarea:focus {
     }
 }
 
+.no-diff {
+    margin: 10px;
+    padding: 10px;
+    font-size: x-large;
+    color: yellowgreen;
+    text-align: center;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid var(--diff-added-border);
+    border-radius: 0.5rem;
+}
+
 @media (max-width: 1000px) {
 
     .comparison-grid,
@@ -351,8 +368,55 @@ textarea:focus {
         grid-template-columns: 1fr;
     }
 
+    footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--text-secondary);
+    }
+
+    footer a {
+        color: orangered;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+        color: #ff6b47;
+        text-decoration: underline;
+    }
+
+    .no-diff {
+        /* text-align: center;
+        padding: 2rem;
+        font-size: 1.2rem;
+        color: var(--text-primary);
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid var(--diff-added-border);
+        border-radius: 0.5rem; */
+        margin: 10px;
+        padding: 10px;
+        /* margin-left: auto; */
+        font-size: x-large;
+        color: yellowgreen;
+    }
+
     .diff-pane {
         border-right: none;
         border-bottom: 1px solid var(--glass-border);
     }
+}
+
+footer {
+    padding: 2rem 1rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--glass-border);
+    margin-top: auto;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+footer a {
+    color: var(--accent-color);
+    font-weight: 600;
+    transition: color 0.3s;
 }
