@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiffCheck - Premium File Comparison</title>
+    <meta name="description"
+        content="Compare two versions of a file and highlight differences with ease. Fast, secure, and user-friendly.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>DiffCheck</h1>
+        <p class="subtitle">Securely compare code and text with precision</p>
+    </header>
+
+    <main>
+        <div class="controls">
+            <div class="options-group">
+                <label class="option">
+                    <input type="checkbox" id="ignoreWhitespace">
+                    Ignore Whitespace
+                </label>
+                <label class="option">
+                    <input type="checkbox" id="ignoreCase">
+                    Ignore Case
+                </label>
+            </div>
+            <button id="compareBtn" class="btn">
+                ⚡ Compare Files
+            </button>
+        </div>
+
+        <div class="comparison-grid">
+            <div class="editor-container">
+                <div class="editor-header">
+                    <h3>Original File</h3>
+                    <div class="file-input-wrapper">
+                        <span class="upload-link">Upload File</span>
+                        <input type="file" id="file1" accept=".txt,.js,.css,.html,.json,.md">
+                    </div>
+                </div>
+                <textarea id="text1" placeholder="Paste your original text or upload a file..."></textarea>
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-header">
+                    <h3>Modified File</h3>
+                    <div class="file-input-wrapper">
+                        <span class="upload-link">Upload File</span>
+                        <input type="file" id="file2" accept=".txt,.js,.css,.html,.json,.md">
+                    </div>
+                </div>
+                <textarea id="text2" placeholder="Paste your modified text or upload a file..."></textarea>
+            </div>
+        </div>
+
+        <div id="diffResult" class="diff-output">
+            <div class="diff-stats-header">
+                <div class="stat-box">
+                    <div class="stat-label">
+                        <span style="color: var(--diff-removed-border)">⊖</span>
+                        <span id="removalStats">0 removals</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyText('text1')">Copy</button>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">
+                        <span style="color: var(--diff-added-border)">⊕</span>
+                        <span id="additionStats">0 additions</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyText('text2')">Copy</button>
+                </div>
+            </div>
+            <div class="diff-side-by-side">
+                <div id="diffLeft" class="diff-pane"></div>
+                <div id="diffRight" class="diff-pane"></div>
+            </div>
+        </div>
+    </main>
+
+
+    <footer>
+        <p>&copy; 2026 DiffCheck. by <a href="https://sagarmalla.info.np" target="_blank" rel="noopener noreferrer"
+                style="color:orangered">Sagar Malla</a> </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
