@@ -41,4 +41,3 @@ python3 -m http.server 8000
 This project is open-source. Feel free to modify and adapt it for your own needs.
 
 ---
-Built by Antigravity
