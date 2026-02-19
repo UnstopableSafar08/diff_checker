@@ -12,21 +12,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const removalStats = document.getElementById("removalStats");
   const additionStats = document.getElementById("additionStats");
 
-  // Clear button — fade out then reload smoothly
+  // Clear button — Reset inputs and results without reload
   const clearBtn = document.getElementById("clearBtn");
   clearBtn.addEventListener("click", (e) => {
-    // prevent accidental double-handling
     e.preventDefault();
-    // smooth scroll to top first
-    try {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (err) {}
-    // fade out the body then reload
-    document.body.style.transition = "opacity 240ms ease";
-    document.body.style.opacity = "0";
-    setTimeout(() => {
-      location.reload();
-    }, 260);
+    
+    // Smooth scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Clear inputs
+    text1.value = "";
+    text2.value = "";
+    file1.value = "";
+    file2.value = "";
+    
+    // Reset stats
+    removalStats.textContent = "0 removals";
+    additionStats.textContent = "0 additions";
+    
+    // Clear diff panes
+    diffLeft.innerHTML = "";
+    diffRight.innerHTML = "";
+    
+    // Reset diff result content in case it was modified (e.g. identical message)
+    // Remove any special messages like "Fully identical"
+    const existingNoDiff = diffResult.querySelector(".no-diff");
+    if (existingNoDiff) existingNoDiff.remove();
+    
+    // Ensure side-by-side view is visible for next time
+    const sideBySide = diffResult.querySelector(".diff-side-by-side");
+    if (sideBySide) sideBySide.style.display = "grid";
+
+    // Hide result section
+    diffResult.classList.remove("visible");
   });
 
   // Copy to clipboard
@@ -121,29 +139,39 @@ document.addEventListener("DOMContentLoaded", () => {
     // console.log('Normalized compare', { n1, n2, options });
 
     if (n1 === n2) {
-      diffResult.innerHTML = `
-        <div class="diff-stats-header">
-          <div class="stat-box">
-            <div class="stat-label">
-              <span style="color: var(--diff-removed-border)">⊖</span>
-              <span>0 removals</span>
-            </div>
-            <button class="btn-copy" onclick="copyText('text1', this)">Copy</button>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">
-              <span style="color: var(--diff-added-border)">⊕</span>
-              <span>0 additions</span>
-            </div>
-            <button class="btn-copy" onclick="copyText('text2', this)">Copy</button>
-          </div>
-        </div>
-        <div class="no-diff">There is no difference, Fully identical.</div>
-      `;
+      // Clear previous diff panes
+      diffLeft.innerHTML = "";
+      diffRight.innerHTML = "";
+      
+      // Update stats
+      removalStats.textContent = "0 removals";
+      additionStats.textContent = "0 additions";
+
+      // Show identical message in a clean way without destroying DOM structure
+      const sideBySide = diffResult.querySelector(".diff-side-by-side");
+      let noDiffMsg = diffResult.querySelector(".no-diff");
+      
+      if (!noDiffMsg) {
+        noDiffMsg = document.createElement("div");
+        noDiffMsg.className = "no-diff";
+        noDiffMsg.textContent = "There is no difference, Fully identical.";
+        // Insert it after the stats header but before the side-by-side grid
+        diffResult.insertBefore(noDiffMsg, sideBySide);
+      }
+      
+      // Hide side-by-side panes when identical
+      if (sideBySide) sideBySide.style.display = "none";
+      
       diffResult.classList.add("visible");
       diffResult.scrollIntoView({ behavior: "smooth" });
       return;
     }
+
+    // If not identical, ensure side-by-side is visible and no-diff message is gone
+    const sideBySide = diffResult.querySelector(".diff-side-by-side");
+    if (sideBySide) sideBySide.style.display = "grid";
+    const noDiffMsg = diffResult.querySelector(".no-diff");
+    if (noDiffMsg) noDiffMsg.remove();
 
     const diff = Diff.diffLines(val1, val2, options);
     renderSideBySide(diff, options);

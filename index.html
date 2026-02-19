@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DiffCheck - Online File Comparison</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <meta name="description"
         content="Compare two versions of a file and highlight differences with ease. Fast, secure, and user-friendly.">
     <link rel="stylesheet" href="assets/style.css">
@@ -16,38 +17,18 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
 </head>
 
 <body>
     <header>
-        <h1>DiffCheck</h1>
-        <p class="subtitle">Securely compare code and text with precision</p>
+        <h1><a href="index.html" class="typing-header" style="text-decoration: none;">DiffCheck</a></h1>
+        <p class="subtitle" data-aos="fade-down" data-aos-delay="400">Securely compare code and text with precision</p>
     </header>
 
     <main>
-        <div class="controls">
-            <div class="options-group">
-                <label class="option">
-                    <input type="checkbox" id="ignoreWhitespace">
-                    Ignore Whitespace
-                </label>
-                <label class="option">
-                    <input type="checkbox" id="ignoreCase">
-                    Ignore Case
-                </label>
-            </div>
-            <button id="compareBtn" class="btn">
-                <i class="fa-solid fa-code-compare fa-2xl" style="color: rgb(237, 22, 4);"></i>
-                Compare Files
-            </button>
-            <button id="clearBtn" class="btn">
-                <i class="fa-solid fa-broom fa-2xl" style="color: rgb(237, 22, 4);"></i>
-                Clear Contents
-            </button>
-        </div>
-
-        <div class="comparison-grid">
+        <div class="comparison-grid" data-aos="fade-up" data-aos-duration="1200">
             <div class="editor-container">
                 <div class="editor-header">
                     <h3>Original File</h3>
@@ -69,6 +50,27 @@
                 </div>
                 <textarea id="text2" placeholder="Paste your modified text or upload a file..."></textarea>
             </div>
+        </div>
+
+        <div class="controls" data-aos="slide-up" data-aos-duration="1000">
+            <div class="options-group">
+                <label class="option">
+                    <input type="checkbox" id="ignoreWhitespace">
+                    Ignore Whitespace
+                </label>
+                <label class="option">
+                    <input type="checkbox" id="ignoreCase">
+                    Ignore Case
+                </label>
+            </div>
+            <button id="compareBtn" class="btn">
+                <i class="fa-solid fa-code-compare fa-2xl" style="color: rgb(237, 22, 4);"></i>
+                Compare Files
+            </button>
+            <button id="clearBtn" class="btn">
+                <i class="fa-solid fa-broom fa-2xl" style="color: rgb(237, 22, 4);"></i>
+                Clear Contents
+            </button>
         </div>
 
         <div id="diffResult" class="diff-output">
@@ -102,6 +104,15 @@
         </center>
     </footer>
 
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: false,
+            mirror: true
+        });
+    </script>
     <script src="assets/script.js"></script>
 </body>
 
