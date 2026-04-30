@@ -24,6 +24,26 @@
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
+/* Light mode variables */
+body.light-mode {
+    --bg-color: #f8fafc;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --accent-color: #0284c7;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+
+    --diff-added-bg: rgba(34, 197, 94, 0.2);
+    --diff-added-border: #16a34a;
+    --diff-added-word: rgba(34, 197, 94, 0.5);
+
+    --diff-removed-bg: rgba(239, 68, 68, 0.2);
+    --diff-removed-border: #dc2626;
+    --diff-removed-word: rgba(239, 68, 68, 0.5);
+
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+
 body {
     background: radial-gradient(circle at top left, #1e1b4b, #020617);
     color: var(--text-primary);
@@ -31,15 +51,53 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+body.light-mode {
+    background: radial-gradient(circle at top left, #e0e7ff, #f8fafc);
 }
 
 header {
-    padding: 3rem 1rem;
+    padding: 2rem 1rem;
     text-align: center;
+    position: relative;
+}
+
+.header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.theme-toggle {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.theme-toggle:hover {
+    background: var(--accent-color);
+    color: #020617;
+    transform: translateY(-50%) scale(1.1);
 }
 
 h1 {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 800;
     letter-spacing: -2px;
     margin-bottom: 0.5rem;
@@ -48,7 +106,7 @@ h1 {
 }
 
 .typing-header {
-    background: linear-gradient(to bottom right, #f8fafc, #94a3b8);
+    background: linear-gradient(to bottom right, #0a66c2, #95b894);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -61,6 +119,10 @@ h1 {
         typing 6s steps(20) infinite,
         blink 0.8s step-end infinite;
 }
+
+/* body.light-mode .typing-header {
+    background: linear-gradient(to bottom right, #0f172a, #334155);
+} */
 
 @keyframes typing {
 
@@ -115,12 +177,19 @@ main {
     border: 1px solid var(--glass-border);
     border-radius: 1.5rem;
     padding: 1.5rem 2rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
     align-items: center;
+    justify-content: space-between;
     box-shadow: var(--card-shadow);
+}
+
+.button-group {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .options-group {
@@ -152,12 +221,15 @@ main {
     background: var(--accent-color);
     color: #020617;
     border: none;
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 1.5rem;
     border-radius: 1rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s;
     box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .btn:hover {
@@ -165,10 +237,199 @@ main {
     box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
 }
 
+.btn-secondary {
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    box-shadow: none;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+}
+
 #compareBtn {
-    margin-left: auto;
     font-weight: bold;
     background-color: rgb(136, 200, 40);
+}
+
+#compareBtn:hover {
+    background-color: rgb(120, 180, 35);
+}
+
+/* Progress Indicator */
+.progress-indicator {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent-color);
+    width: 0%;
+    animation: progress 1.5s ease-in-out infinite;
+}
+
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+
+    50% {
+        width: 70%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.progress-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Diff Actions & Navigation */
+.diff-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--glass-border);
+    gap: 1rem;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: var(--accent-color);
+    color: #020617;
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.change-counter {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    min-width: 60px;
+    text-align: center;
+}
+
+.diff-export {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-export {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.3s;
+}
+
+.btn-export:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border-color: var(--accent-color);
+}
+
+/* Unified Diff View */
+.diff-unified {
+    padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.diff-unified .diff-line {
+    padding: 0.2rem 0.5rem;
+}
+
+.diff-unified .diff-line.removed {
+    background: var(--diff-removed-bg);
+}
+
+.diff-unified .diff-line.added {
+    background: var(--diff-added-bg);
+}
+
+.diff-unified .diff-line.unchanged {
+    color: var(--text-secondary);
+}
+
+/* Hidden lines when showing only changes */
+.diff-line.hidden {
+    display: none;
+}
+
+/* Syntax highlighting overrides */
+.diff-pane code[class*="language-"],
+.diff-unified code[class*="language-"] {
+    background: transparent !important;
+    padding: 0 !important;
+    font-size: inherit !important;
+}
+
+.diff-pane pre[class*="language-"],
+.diff-unified pre[class*="language-"] {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Light mode syntax highlighting */
+body.light-mode .diff-pane code[class*="language-"],
+body.light-mode .diff-unified code[class*="language-"] {
+    color: #333 !important;
 }
 
 /* Side-by-Side Editor */
@@ -176,7 +437,7 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
     min-height: 400px;
     /* Better than fixed height to allow for large editors */
 }
@@ -236,7 +497,7 @@ main {
 
 textarea {
     width: 100%;
-    height: 350px;
+    height: 330px;
     background: rgba(0, 0, 0, 0.2);
     color: var(--text-primary);
     border: none;
@@ -249,13 +510,21 @@ textarea {
     transition: background 0.3s;
 }
 
+body.light-mode textarea {
+    background: rgba(0, 0, 0, 0.05);
+}
+
 textarea:focus {
     background: rgba(0, 0, 0, 0.3);
 }
 
+body.light-mode textarea:focus {
+    background: rgba(0, 0, 0, 0.08);
+}
+
 /* Side-by-Side Result */
 .diff-output {
-    margin-top: 3rem;
+    margin-top: 1.5rem;
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
@@ -302,6 +571,10 @@ textarea:focus {
     opacity: 0.4;
     user-select: none;
     background: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .line-num {
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .line-content {
@@ -425,6 +698,24 @@ textarea:focus {
     .diff-pane {
         border-right: none;
         border-bottom: 1px solid var(--glass-border);
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .button-group {
+        justify-content: center;
+    }
+
+    .diff-actions {
+        flex-wrap: wrap;
+    }
+
+    .diff-export {
+        width: 100%;
+        justify-content: center;
     }
 }
 
