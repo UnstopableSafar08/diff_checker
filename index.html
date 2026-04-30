@@ -45,7 +45,7 @@
     <header>
         <div class="header-content">
             <h1><a href="index.html" class="typing-header" style="text-decoration: none;">DiffCheck...</a></h1>
-            <button id="themeToggle" class="theme-toggle" title="Toggle dark/light mode">
+            <button id="themeToggle" class="theme-toggle">
                 <i class="fa-solid fa-moon"></i>
             </button>
         </div>
@@ -64,7 +64,7 @@
                 <div class="editor-header">
                     <h3>Original File</h3>
                     <div class="file-input-wrapper">
-                        <span class="upload-link">Upload File</span>
+                        <span class="upload-link" data-tooltip="Upload a file to the original editor" data-position="bottom">Upload File</span>
                         <input type="file" id="file1"
                             accept=".txt,.js,.jsx,.ts,.tsx,.css,.html,.json,.md,.py,.java,.c,.cpp,.h,.hpp,.cs,.go,.rs,.php,.rb,.sh,.sql,.yaml,.yml,.xml,.toml,.ini,.conf,.log,.csv">
                     </div>
@@ -76,7 +76,7 @@
                 <div class="editor-header">
                     <h3>Modified File</h3>
                     <div class="file-input-wrapper">
-                        <span class="upload-link">Upload File</span>
+                        <span class="upload-link" data-tooltip="Upload a file to the modified editor" data-position="bottom">Upload File</span>
                         <input type="file" id="file2"
                             accept=".txt,.js,.jsx,.ts,.tsx,.css,.html,.json,.md,.py,.java,.c,.cpp,.h,.hpp,.cs,.go,.rs,.php,.rb,.sh,.sql,.yaml,.yml,.xml,.toml,.ini,.conf,.log,.csv">
                     </div>
@@ -87,33 +87,33 @@
 
         <div class="controls" data-aos="slide-up" data-aos-duration="600">
             <div class="options-group">
-                <label class="option">
+                <label class="option" data-tooltip="Ignore spaces, tabs, and line breaks when comparing" data-position="top">
                     <input type="checkbox" id="ignoreWhitespace">
                     Ignore Whitespace
                 </label>
-                <label class="option">
+                <label class="option" data-tooltip="Treat uppercase and lowercase letters as identical" data-position="top">
                     <input type="checkbox" id="ignoreCase">
                     Ignore Case
                 </label>
-                <label class="option">
+                <label class="option" data-tooltip="Hide unchanged lines and show only the differences" data-position="top">
                     <input type="checkbox" id="showOnlyChanges">
                     Show Only Changes
                 </label>
-                <label class="option">
+                <label class="option" data-tooltip="Display diff in unified format instead of side-by-side" data-position="top">
                     <input type="checkbox" id="unifiedView">
                     Unified View
                 </label>
             </div>
             <div class="button-group">
-                <button id="swapBtn" class="btn btn-secondary" title="Swap files (Ctrl/Cmd+Shift+S)">
+                <button id="swapBtn" class="btn btn-secondary" data-tooltip="Swap the contents of both editors (Ctrl/Cmd+Shift+S)" data-position="top">
                     <i class="fa-solid fa-arrow-right-arrow-left"></i>
                     Swap
                 </button>
-                <button id="compareBtn" class="btn" title="Compare (Ctrl/Cmd+Enter)">
+                <button id="compareBtn" class="btn" data-tooltip="Compare the two texts and highlight differences (Ctrl/Cmd+Enter)" data-position="top">
                     <i class="fa-solid fa-code-compare"></i>
                     Compare
                 </button>
-                <button id="clearBtn" class="btn btn-secondary" title="Clear contents">
+                <button id="clearBtn" class="btn btn-secondary" data-tooltip="Clear all text from both editors" data-position="top">
                     <i class="fa-solid fa-broom"></i>
                     Clear
                 </button>
@@ -127,29 +127,29 @@
                         <span style="color: var(--diff-removed-border)">⊖</span>
                         <span id="removalStats">0 removals</span>
                     </div>
-                    <button class="btn-copy" onclick="copyText('text1', this)">Copy</button>
+                    <button class="btn-copy" data-tooltip="Copy original text to clipboard" data-position="top" onclick="copyText('text1', this)">Copy</button>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">
                         <span style="color: var(--diff-added-border)">⊕</span>
                         <span id="additionStats">0 additions</span>
                     </div>
-                    <button class="btn-copy" onclick="copyText('text2', this)">Copy</button>
+                    <button class="btn-copy" data-tooltip="Copy modified text to clipboard" data-position="top" onclick="copyText('text2', this)">Copy</button>
                 </div>
             </div>
             <div class="diff-actions">
-                <button id="prevChange" class="nav-btn" title="Previous change (Alt+Up)">
+                <button id="prevChange" class="nav-btn" data-tooltip="Navigate to previous change (Alt+Up)" data-position="top">
                     <i class="fa-solid fa-chevron-up"></i>
                 </button>
                 <span id="changeCounter" class="change-counter">0 / 0</span>
-                <button id="nextChange" class="nav-btn" title="Next change (Alt+Down)">
+                <button id="nextChange" class="nav-btn" data-tooltip="Navigate to next change (Alt+Down)" data-position="top">
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="diff-export">
-                    <button id="copyDiff" class="btn-export" title="Copy diff to clipboard">
+                    <button id="copyDiff" class="btn-export" data-tooltip="Copy unified diff format to clipboard" data-position="top">
                         <i class="fa-solid fa-copy"></i> Copy Diff
                     </button>
-                    <button id="downloadDiff" class="btn-export" title="Download diff as file">
+                    <button id="downloadDiff" class="btn-export" data-tooltip="Download diff as .patch file" data-position="top">
                         <i class="fa-solid fa-download"></i> Download
                     </button>
                 </div>
