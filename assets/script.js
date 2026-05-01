@@ -685,4 +685,64 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // Mobile dropdown toggle
+  const dropdownToggle = document.querySelector(".dropdown-toggle");
+  const footerDropdown = document.querySelector(".footer-dropdown");
+
+  if (dropdownToggle && footerDropdown) {
+    let isDropdownOpen = false;
+
+    dropdownToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      isDropdownOpen = !isDropdownOpen;
+      const dropdownMenu = footerDropdown.querySelector(".dropdown-menu");
+
+      if (isDropdownOpen) {
+        dropdownMenu.classList.remove("closing");
+        dropdownMenu.style.opacity = "1";
+        dropdownMenu.style.visibility = "visible";
+        dropdownMenu.style.transform = "translateX(50%) translateY(0)";
+      } else {
+        dropdownMenu.classList.add("closing");
+        setTimeout(() => {
+          dropdownMenu.style.opacity = "0";
+          dropdownMenu.style.visibility = "hidden";
+          dropdownMenu.style.transform = "translateX(50%) translateY(10px)";
+          dropdownMenu.classList.remove("closing");
+        }, 200);
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (isDropdownOpen && !footerDropdown.contains(e.target)) {
+        isDropdownOpen = false;
+        const dropdownMenu = footerDropdown.querySelector(".dropdown-menu");
+        dropdownMenu.classList.add("closing");
+        setTimeout(() => {
+          dropdownMenu.style.opacity = "0";
+          dropdownMenu.style.visibility = "hidden";
+          dropdownMenu.style.transform = "translateX(50%) translateY(10px)";
+          dropdownMenu.classList.remove("closing");
+        }, 200);
+      }
+    });
+
+    // Close dropdown when clicking a link
+    const dropdownLinks = footerDropdown.querySelectorAll(".dropdown-menu a");
+    dropdownLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        isDropdownOpen = false;
+        const dropdownMenu = footerDropdown.querySelector(".dropdown-menu");
+        dropdownMenu.classList.add("closing");
+        setTimeout(() => {
+          dropdownMenu.style.opacity = "0";
+          dropdownMenu.style.visibility = "hidden";
+          dropdownMenu.style.transform = "translateX(50%) translateY(10px)";
+          dropdownMenu.classList.remove("closing");
+        }, 200);
+      });
+    });
+  }
 });
