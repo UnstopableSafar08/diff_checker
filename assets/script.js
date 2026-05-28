@@ -746,3 +746,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+function goToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.addEventListener('scroll', function () {
+  const btn = document.getElementById('goToTopBtn');
+  if (btn) btn.style.display = window.scrollY > 100 ? 'flex' : 'none';
+});
