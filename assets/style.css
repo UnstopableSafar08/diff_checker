@@ -173,8 +173,8 @@ body.light-mode {
     background: radial-gradient(ellipse at center, transparent 40%, rgba(2, 6, 23, 0.85) 100%);
 }
 
-body.light-mode .bg-layer {
-    opacity: 0.3;
+body.light-mode .orb {
+    opacity: 0.25;
 }
 
 body.light-mode .vignette {

@@ -763,6 +763,7 @@ window.addEventListener('scroll', function () {
   const ctx = canvas.getContext("2d");
 
   const COLORS = ["#22c55e", "#38bdf8", "#8b5cf6", "#ef4444", "#f59e0b"];
+  const LIGHT_COLORS = ["#15803d", "#0369a1", "#6d28d9", "#dc2626", "#b45309"];
   const LINK_DISTANCE = 150;
   const CURSOR_LINK_DISTANCE = 150;
   const MOUSE_RADIUS = 120;
@@ -771,15 +772,26 @@ window.addEventListener('scroll', function () {
   let particles = [];
   let width = 0;
   let height = 0;
+  let isLight = document.body.classList.contains("light-mode");
   const mouse = { x: -9999, y: -9999 };
 
-  const randomColor = () => COLORS[Math.floor(Math.random() * COLORS.length)];
+  const themeToggle = document.getElementById("themeToggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      isLight = document.body.classList.contains("light-mode");
+      particles.forEach((p) => (p.color = randomColor()));
+    });
+  }
+
+  const palette = () => (isLight ? LIGHT_COLORS : COLORS);
+
+  const randomColor = () => palette()[Math.floor(Math.random() * palette().length)];
 
   const spawnParticle = (randomPos) => ({
     x: randomPos ? Math.random() * width : width / 2,
     y: randomPos ? Math.random() * height : height / 2,
-    vx: (Math.random() - 0.5) * 0.8,
-    vy: (Math.random() - 0.5) * 0.8,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
     size: 1 + Math.random() * 2,
     color: randomColor(),
     pulseSpeed: 0.8 + Math.random() * 2.2,
@@ -829,7 +841,9 @@ window.addEventListener('scroll', function () {
         if (Math.abs(dx) > LINK_DISTANCE || Math.abs(dy) > LINK_DISTANCE) continue;
         const dist = Math.hypot(dx, dy);
         if (dist < LINK_DISTANCE) {
-          ctx.strokeStyle = `rgba(148, 163, 184, ${(1 - dist / LINK_DISTANCE) * 0.35})`;
+          ctx.strokeStyle = isLight
+            ? `rgba(71, 85, 105, ${(1 - dist / LINK_DISTANCE) * 0.45})`
+            : `rgba(148, 163, 184, ${(1 - dist / LINK_DISTANCE) * 0.35})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
@@ -846,7 +860,9 @@ window.addEventListener('scroll', function () {
         if (Math.abs(dx) > CURSOR_LINK_DISTANCE || Math.abs(dy) > CURSOR_LINK_DISTANCE) continue;
         const dist = Math.hypot(dx, dy);
         if (dist < CURSOR_LINK_DISTANCE) {
-          ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - dist / CURSOR_LINK_DISTANCE) * 0.55})`;
+          ctx.strokeStyle = isLight
+            ? `rgba(2, 132, 199, ${(1 - dist / CURSOR_LINK_DISTANCE) * 0.6})`
+            : `rgba(56, 189, 248, ${(1 - dist / CURSOR_LINK_DISTANCE) * 0.55})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
@@ -860,7 +876,7 @@ window.addEventListener('scroll', function () {
       step(p);
       applyMouseForce(p);
       const radius = p.size * (0.6 + 0.4 * Math.sin(time * 0.001 * p.pulseSpeed + p.phase));
-      ctx.globalAlpha = 0.9;
+      ctx.globalAlpha = isLight ? 1 : 0.9;
       ctx.fillStyle = p.color;
       ctx.beginPath();
       ctx.arc(p.x, p.y, Math.max(0.4, radius), 0, Math.PI * 2);
