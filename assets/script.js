@@ -755,3 +755,151 @@ window.addEventListener('scroll', function () {
   const btn = document.getElementById('goToTopBtn');
   if (btn) btn.style.display = window.scrollY > 100 ? 'flex' : 'none';
 });
+
+// ===== Particle Network Background =====
+(function initParticleBackground() {
+  const canvas = document.getElementById("particleCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+
+  const COLORS = ["#22c55e", "#38bdf8", "#8b5cf6", "#ef4444", "#f59e0b"];
+  const LINK_DISTANCE = 150;
+  const CURSOR_LINK_DISTANCE = 150;
+  const MOUSE_RADIUS = 120;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let particles = [];
+  let width = 0;
+  let height = 0;
+  const mouse = { x: -9999, y: -9999 };
+
+  const randomColor = () => COLORS[Math.floor(Math.random() * COLORS.length)];
+
+  const spawnParticle = (randomPos) => ({
+    x: randomPos ? Math.random() * width : width / 2,
+    y: randomPos ? Math.random() * height : height / 2,
+    vx: (Math.random() - 0.5) * 0.8,
+    vy: (Math.random() - 0.5) * 0.8,
+    size: 1 + Math.random() * 2,
+    color: randomColor(),
+    pulseSpeed: 0.8 + Math.random() * 2.2,
+    phase: Math.random() * Math.PI * 2,
+  });
+
+  const resize = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.min(80, Math.max(30, Math.round((width * height) / 18000)));
+    particles = Array.from({ length: count }, () => spawnParticle(true));
+  };
+
+  const step = (p) => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x < 0 || p.x > width) p.vx *= -1;
+    if (p.y < 0 || p.y > height) p.vy *= -1;
+    p.x = Math.max(0, Math.min(width, p.x));
+    p.y = Math.max(0, Math.min(height, p.y));
+  };
+
+  const applyMouseForce = (p) => {
+    const dx = p.x - mouse.x;
+    const dy = p.y - mouse.y;
+    const dist = Math.hypot(dx, dy);
+    if (dist < MOUSE_RADIUS && dist > 0.001) {
+      const force = ((MOUSE_RADIUS - dist) / MOUSE_RADIUS) * 0.6;
+      p.vx += (dx / dist) * force;
+      p.vy += (dy / dist) * force;
+    }
+  };
+
+  const draw = (time) => {
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i];
+        const b = particles[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        if (Math.abs(dx) > LINK_DISTANCE || Math.abs(dy) > LINK_DISTANCE) continue;
+        const dist = Math.hypot(dx, dy);
+        if (dist < LINK_DISTANCE) {
+          ctx.strokeStyle = `rgba(148, 163, 184, ${(1 - dist / LINK_DISTANCE) * 0.35})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    if (mouse.x > -1000) {
+      for (const p of particles) {
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        if (Math.abs(dx) > CURSOR_LINK_DISTANCE || Math.abs(dy) > CURSOR_LINK_DISTANCE) continue;
+        const dist = Math.hypot(dx, dy);
+        if (dist < CURSOR_LINK_DISTANCE) {
+          ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - dist / CURSOR_LINK_DISTANCE) * 0.55})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    for (const p of particles) {
+      step(p);
+      applyMouseForce(p);
+      const radius = p.size * (0.6 + 0.4 * Math.sin(time * 0.001 * p.pulseSpeed + p.phase));
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.4, radius), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  };
+
+  const frame = (time) => {
+    draw(time);
+    requestAnimationFrame(frame);
+  };
+
+  window.addEventListener("resize", resize);
+  window.addEventListener("mousemove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+  document.addEventListener("mouseleave", () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+  window.addEventListener("touchmove", (e) => {
+    const t = e.touches[0];
+    if (t) {
+      mouse.x = t.clientX;
+      mouse.y = t.clientY;
+    }
+  }, { passive: true });
+  window.addEventListener("touchend", () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  resize();
+
+  if (reducedMotion) {
+    draw(0);
+  } else {
+    requestAnimationFrame(frame);
+  }
+})();
